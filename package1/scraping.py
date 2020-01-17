@@ -17,10 +17,9 @@ def smart_parser(row_text):
     row_text = re.sub('\[\d\]', '', row_text)
     return list(map(lambda x: x.strip(), row_text.split('\n')))
 
-def scraping(url):
+def scraping(forbes_info):
     
-    forbes_info = pd.read_csv('/Users/Abacuc/lab/Ironhack-Module-1-Project-Abacuc-Mendez/data/processed/Billionaires_clean.csv')
-
+    url='https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population'
     html = requests.get(url).content
     soup = BeautifulSoup(html, "lxml")
     table = soup.find_all('table',{'class':'wikitable sortable mw-datatable'})[0]
@@ -34,14 +33,13 @@ def scraping(url):
     df.columns = ['Rank', 'country','Population',' % of World Population','Date','Source']
     forbes_info_result=pd.merge(forbes_info, df, on='country')
     output_folder = 'processed'
+
     if not os.path.exists(output_folder):
         os.mkdir(output_folder)
 
     forbes_info_result.to_csv(f'{output_folder}/Results.csv', index=False)
 
-    
-scraping('https://en.wikipedia.org/wiki/List_of_countries_and_dependencies_by_population')
-
+    return forbes_info_result
 
 # In[ ]:
 

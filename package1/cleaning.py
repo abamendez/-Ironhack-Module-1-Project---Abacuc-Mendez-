@@ -3,7 +3,6 @@
 
 # In[3]:
 
-
 import pandas as pd
 import os
 import numpy as np
@@ -19,9 +18,7 @@ def drop_cols_threshold (table, n):
     return table_clean
 
 
-def clean(sqlitedb_path):
-    
-    eng = create_engine(f'sqlite:///{sqlitedb_path}')
+def clean(eng):
 
     business_info = pd.read_sql_table('business_info', con=eng)
     personal_info = pd.read_sql_table('personal_info', con=eng)
@@ -61,6 +58,5 @@ def clean(sqlitedb_path):
 
     forbes_info.to_csv(f'{output_folder}/Billionaires_clean.csv', index=False)
 
-
-clean('../data/raw/abacucmendezsala.db')
+    return forbes_info
 
